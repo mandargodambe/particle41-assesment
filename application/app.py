@@ -19,9 +19,9 @@ def home():
     }
     return jsonify(response), 200
 
-# @app.route("/health", methods=["GET"])
-# def health():
-#     return jsonify({"status": "ok"}), 200
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
     # Use 5000 internally (standard for containers)
