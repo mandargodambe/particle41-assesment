@@ -109,6 +109,7 @@ variable "service_name" {
 variable "container_image" {
   description = "The Docker image to use for the ECS task."
   type        = string
+  default = "mandargodambe/assessment:latest"
 }
 
 variable "desired_count" {
