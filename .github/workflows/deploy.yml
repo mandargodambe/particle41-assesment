@@ -30,7 +30,7 @@ jobs:
 
     - name: Terraform Init
       working-directory: ./terraform/ecs-terraform-module
-      run: terraform init
+      run: terraform init -backend=false
 
     - name: Terraform Validate
       working-directory: ./terraform/ecs-terraform-module
