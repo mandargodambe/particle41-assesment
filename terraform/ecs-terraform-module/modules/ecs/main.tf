@@ -9,12 +9,12 @@ resource "aws_iam_role" "ecs_execution_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action    = "sts:AssumeRole"
+        Action = "sts:AssumeRole"
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
-        Effect    = "Allow"
-        Sid       = ""
+        Effect = "Allow"
+        Sid    = ""
       }
     ]
   })
@@ -32,12 +32,12 @@ resource "aws_iam_role" "ecs_task_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action    = "sts:AssumeRole"
+        Action = "sts:AssumeRole"
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
-        Effect    = "Allow"
-        Sid       = ""
+        Effect = "Allow"
+        Sid    = ""
       }
     ]
   })
@@ -46,7 +46,7 @@ resource "aws_iam_role" "ecs_task_role" {
 resource "aws_ecs_task_definition" "this" {
   family                   = var.task_family
   network_mode             = "awsvpc"
-  requires_compatibilities  = ["FARGATE"]
+  requires_compatibilities = ["FARGATE"]
   cpu                      = var.cpu
   memory                   = var.memory
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
@@ -76,10 +76,10 @@ resource "aws_security_group" "ecs_security_group" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = var.container_port
-    to_port     = var.container_port
-    protocol    = "tcp"
-    cidr_blocks = var.alb_security_group_id == "" ? ["0.0.0.0/0"] : []
+    from_port       = var.container_port
+    to_port         = var.container_port
+    protocol        = "tcp"
+    cidr_blocks     = var.alb_security_group_id == "" ? ["0.0.0.0/0"] : []
     security_groups = var.alb_security_group_id != "" ? [var.alb_security_group_id] : []
   }
 

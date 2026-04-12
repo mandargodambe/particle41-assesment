@@ -62,10 +62,11 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name     = var.target_group_name != "" ? var.target_group_name : "${var.alb_name}-tg"
-  port     = var.target_group_port
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name        = var.target_group_name != "" ? var.target_group_name : "${var.alb_name}-tg"
+  port        = var.target_group_port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
 
   health_check {
     path                = var.health_check_path
