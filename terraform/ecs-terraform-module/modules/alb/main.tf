@@ -3,7 +3,7 @@ resource "aws_lb" "application_load_balancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = var.public_subnets
+  subnets            = var.public_subnet_ids
 
   enable_deletion_protection = false
   idle_timeout               = 60
@@ -11,7 +11,7 @@ resource "aws_lb" "application_load_balancer" {
 
 resource "aws_security_group" "alb_sg" {
   name        = "${var.alb_name}-sg"
-  description = "Allow HTTP and HTTPS traffic"
+  description = "Allow HTTP and HTTPS traffic to ALB"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -38,16 +38,17 @@ resource "aws_security_group" "alb_sg" {
 
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.application_load_balancer.arn
-  port              = 80
+  port              = var.listener_port
   protocol          = "HTTP"
 
   default_action {
-    type = "forward"
-    target_group_arn = aws_lb_target_group.app_target_group.arn
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.this.arn
   }
 }
 
 resource "aws_lb_listener" "https" {
+  count             = var.certificate_arn != "" ? 1 : 0
   load_balancer_arn = aws_lb.application_load_balancer.arn
   port              = 443
   protocol          = "HTTPS"
@@ -55,22 +56,22 @@ resource "aws_lb_listener" "https" {
   certificate_arn   = var.certificate_arn
 
   default_action {
-    type = "forward"
-    target_group_arn = aws_lb_target_group.app_target_group.arn
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.this.arn
   }
 }
 
-resource "aws_lb_target_group" "app_target_group" {
-  name     = "${var.alb_name}-tg"
+resource "aws_lb_target_group" "this" {
+  name     = var.target_group_name != "" ? var.target_group_name : "${var.alb_name}-tg"
   port     = var.target_group_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
   health_check {
     path                = var.health_check_path
-    interval            = 30
-    timeout             = 5
-    healthy_threshold  = 2
-    unhealthy_threshold = 2
+    interval            = var.health_check_interval
+    timeout             = var.health_check_timeout
+    healthy_threshold   = var.health_check_healthy_threshold
+    unhealthy_threshold = var.health_check_unhealthy_threshold
   }
 }

@@ -1,55 +1,42 @@
-resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr
-  enable_dns_support = true
-  enable_dns_hostnames = true
+module "networking" {
+  source               = "./modules/networking"
+  vpc_cidr             = var.vpc_cidr
+  public_subnet_cidrs  = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
+  availability_zones   = var.availability_zones
 }
 
-resource "aws_subnet" "public" {
-  count = var.public_subnet_count
-  vpc_id = aws_vpc.main.id
-  cidr_block = element(var.public_subnet_cidrs, count.index)
-  map_public_ip_on_launch = true
+module "alb" {
+  source                           = "./modules/alb"
+  alb_name                         = var.alb_name
+  listener_port                    = var.listener_port
+  vpc_id                           = module.networking.vpc_id
+  public_subnet_ids                = module.networking.public_subnet_ids
+  target_group_name                = var.target_group_name
+  target_group_port                = var.target_group_port
+  certificate_arn                  = var.certificate_arn
+  health_check_path                = var.health_check_path
+  health_check_interval            = var.health_check_interval
+  health_check_timeout             = var.health_check_timeout
+  health_check_healthy_threshold   = var.health_check_healthy_threshold
+  health_check_unhealthy_threshold = var.health_check_unhealthy_threshold
 }
 
-resource "aws_subnet" "private" {
-  count = var.private_subnet_count
-  vpc_id = aws_vpc.main.id
-  cidr_block = element(var.private_subnet_cidrs, count.index)
-}
-
-resource "aws_internet_gateway" "main" {
-  vpc_id = aws_vpc.main.id
-}
-
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-}
-
-resource "aws_route" "public" {
-  route_table_id = aws_route_table.public.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.main.id
-}
-
-resource "aws_route_table_association" "public" {
-  count = var.public_subnet_count
-  subnet_id = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_security_group" "ecs" {
-  vpc_id = aws_vpc.main.id
-  // Add necessary ingress and egress rules here
-}
-
-output "vpc_id" {
-  value = aws_vpc.main.id
-}
-
-output "public_subnet_ids" {
-  value = aws_subnet.public[*].id
-}
-
-output "private_subnet_ids" {
-  value = aws_subnet.private[*].id
+module "ecs" {
+  source                = "./modules/ecs"
+  container_image       = var.container_image
+  desired_count         = var.desired_count
+  cluster_name          = var.cluster_name
+  task_family           = var.task_family
+  cpu                   = var.cpu
+  memory                = var.memory
+  service_name          = var.service_name
+  container_name        = var.container_name
+  container_cpu         = var.container_cpu
+  container_memory      = var.container_memory
+  container_port        = var.container_port
+  vpc_id                = module.networking.vpc_id
+  private_subnet_ids    = module.networking.private_subnet_ids
+  target_group_arn      = module.alb.target_group_arn
+  alb_security_group_id = module.alb.alb_security_group_id
 }

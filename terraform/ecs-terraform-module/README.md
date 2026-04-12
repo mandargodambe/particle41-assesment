@@ -7,11 +7,12 @@ This module is responsible for deploying an Amazon ECS service that runs your Py
 To use this module, include it in your Terraform configuration as follows:
 
 ```hcl
-module "ecs" {
-  source          = "./modules/ecs"
-  container_image = var.container_image
-  desired_count   = var.desired_count
-  ...
+module "ecs_application" {
+  source          = "./terraform/ecs-terraform-module"
+  container_image = "your-docker-image:latest"
+  desired_count   = 2
+  alb_name        = "my-alb"
+  target_group_name = "my-target-group"
 }
 ```
 

@@ -1,55 +1,68 @@
 variable "alb_name" {
-  description = "The name of the Application Load Balancer"
+  description = "The name of the Application Load Balancer."
   type        = string
 }
 
 variable "listener_port" {
-  description = "The port on which the ALB will listen"
+  description = "The port on which the ALB will listen."
   type        = number
   default     = 80
 }
 
 variable "vpc_id" {
-  description = "The VPC ID where the ALB will be deployed"
+  description = "The VPC ID where the ALB will be deployed."
   type        = string
 }
 
 variable "public_subnet_ids" {
-  description = "List of public subnet IDs for the ALB"
+  description = "A list of public subnet IDs for the ALB."
   type        = list(string)
 }
 
 variable "target_group_name" {
-  description = "The name of the target group for the ALB"
+  description = "The name of the target group."
   type        = string
+  default     = ""
+}
+
+variable "target_group_port" {
+  description = "The port used by the target group."
+  type        = number
+  default     = 80
+}
+
+variable "certificate_arn" {
+  description = "The ACM certificate ARN for HTTPS listener."
+  type        = string
+  default     = ""
 }
 
 variable "health_check_path" {
-  description = "The path for health checks"
+  description = "The health check path for the target group."
   type        = string
   default     = "/"
 }
 
 variable "health_check_interval" {
-  description = "The interval between health checks in seconds"
+  description = "Health check interval in seconds."
   type        = number
   default     = 30
 }
 
 variable "health_check_timeout" {
-  description = "The timeout for health checks in seconds"
+  description = "Health check timeout in seconds."
   type        = number
   default     = 5
 }
 
 variable "health_check_healthy_threshold" {
-  description = "The number of consecutive health checks successes required before considering an unhealthy target healthy"
+  description = "Healthy threshold for the ALB target group."
   type        = number
   default     = 2
 }
 
 variable "health_check_unhealthy_threshold" {
-  description = "The number of consecutive health check failures required before considering a target unhealthy"
+  description = "Unhealthy threshold for the ALB target group."
   type        = number
   default     = 2
 }
