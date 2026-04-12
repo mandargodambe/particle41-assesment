@@ -14,7 +14,6 @@ module "alb" {
   public_subnet_ids                = module.networking.public_subnet_ids
   target_group_name                = var.target_group_name
   target_group_port                = var.target_group_port
-  certificate_arn                  = var.certificate_arn
   health_check_path                = var.health_check_path
   health_check_interval            = var.health_check_interval
   health_check_timeout             = var.health_check_timeout

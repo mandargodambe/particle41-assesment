@@ -1,9 +1,9 @@
-output "ecs_service_name" {
-  value = module.ecs.service_name
+output "application_url" {
+  value = "http://${module.alb.alb_dns_name}:80"
 }
 
-output "ecs_task_definition_arn" {
-  value = module.ecs.task_definition_arn
+output "ecs_service_name" {
+  value = module.ecs.service_name
 }
 
 output "alb_dns_name" {

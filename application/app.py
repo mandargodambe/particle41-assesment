@@ -14,7 +14,7 @@ def get_client_ip():
 @app.route("/", methods=["GET"])
 def home():
     response = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(ZoneInfo("Asia/Kolkata")).isoformat(),
         "ip": get_client_ip()
     }
     return jsonify(response), 200
@@ -24,5 +24,5 @@ def health():
     return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
-    # Use 5000 internally (standard for containers)
+    # Use 8080 internally (standard for containers)
     app.run(host="0.0.0.0", port=8080)

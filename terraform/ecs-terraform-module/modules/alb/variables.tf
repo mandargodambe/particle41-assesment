@@ -31,11 +31,11 @@ variable "target_group_port" {
   default     = 8080
 }
 
-variable "certificate_arn" {
-  description = "The ACM certificate ARN for HTTPS listener."
-  type        = string
-  default     = ""
-}
+# variable "certificate_arn" {
+#   description = "The ACM certificate ARN for HTTPS listener."
+#   type        = string
+#   default     = ""
+# }
 
 variable "health_check_path" {
   description = "The health check path for the target group."
