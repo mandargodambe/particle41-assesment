@@ -28,7 +28,7 @@ variable "target_group_name" {
 variable "target_group_port" {
   description = "The port used by the target group."
   type        = number
-  default     = 80
+  default     = 8080
 }
 
 variable "certificate_arn" {
@@ -40,7 +40,7 @@ variable "certificate_arn" {
 variable "health_check_path" {
   description = "The health check path for the target group."
   type        = string
-  default     = "/"
+  default     = "/health"
 }
 
 variable "health_check_interval" {

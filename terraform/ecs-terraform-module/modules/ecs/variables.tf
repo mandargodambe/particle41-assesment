@@ -70,7 +70,7 @@ variable "container_memory" {
 variable "container_port" {
   description = "The container port exposed by the application."
   type        = number
-  default     = 80
+  default     = 8080
 }
 
 variable "target_group_arn" {

@@ -49,7 +49,7 @@ variable "target_group_name" {
 variable "target_group_port" {
   description = "The port for the ALB target group."
   type        = number
-  default     = 80
+  default     = 8080
 }
 
 variable "certificate_arn" {
@@ -151,5 +151,5 @@ variable "container_memory" {
 variable "container_port" {
   description = "The container port exposed by the application."
   type        = number
-  default     = 80
+  default     = 8080
 }
