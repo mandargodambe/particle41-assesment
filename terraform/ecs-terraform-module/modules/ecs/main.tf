@@ -96,7 +96,7 @@ resource "aws_ecs_service" "this" {
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = var.desired_count
-  launch_type     = "FARGATE"
+  launch_type     = "FARGATE_SPOT"
 
   network_configuration {
     subnets          = var.private_subnet_ids
