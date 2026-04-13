@@ -31,7 +31,7 @@ jobs:
     - name: Terraform Init
       working-directory: ./terraform/ecs-terraform-module
       #run: terraform init -backend=false
-      run: terraform init -backend-config="terraform-mrg"
+      run: terraform init -backend-config="bucket=terraform-mrg"
 
     - name: Terraform Validate
       working-directory: ./terraform/ecs-terraform-module
