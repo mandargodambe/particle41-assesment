@@ -27,7 +27,7 @@ AWS ECS Fargate spot is used to host the service for further cost saving providi
 
 ### Manual Deployment
 
-1. Build and push Docker image:
+1. Build and push Docker image: (Optional Step as Image is already build and pushed to docker hub)
    ```bash
    cd application
    docker buildx create --use
@@ -48,13 +48,14 @@ Push to `main` branch to trigger GitHub Actions deployment of infrastructure. Wa
 
 **Required GitHub Secrets:**
 
-Fork the repository > Go to the repo > Setting > Secrets & Variables > Configure AWS account secret key and access key with the key mentioned below:
+Fork the repository > Go to the repo > Settings > Secrets & Variables > Configure AWS account secret key and access key with the key mentioned below:
 
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 
+**Note:** GitHub actions workflow is configured to detroy infrastructure after 5 mins. To avoid deletion of resources comment out line no 46 - 50 in deploy.yml file
 
-**Note:** Docker image must be pre-built and pushed to Docker Hub (`mandargodambe/assessment:1.2`).
+**Note:** Docker image must is pre-built and pushed to Docker Hub (`mandargodambe/assessment:1.2`).
 
 ## Access the Application
 
