@@ -42,6 +42,17 @@ AWS ECS Fargate spot is used to host the service for further cost saving providi
    terraform apply
    ```
 
+To use S3 as backend:
+
+
+Module supports both local and S3 as backend to store state file. However both cant be used at a time, S3 backend configuration is commented. To use S3 as backend uncomment the content of backednf.tf file.
+
+Also comment the line no 33 and uncomment line no 34 in workflow file. 
+
+- `terraform init -backend-config="bucket=your bucket name"`
+
+**Note:** Module supports S3 state locking if using S3 as backend. (Plus point)
+
 ### Automated Deployment
 
 Push to `main` branch to trigger GitHub Actions deployment of infrastructure. Wait for 2 mins to get ECS service up and running after complete deployment
